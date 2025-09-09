@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRODUCT GENERATOR</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            line-height: 1.2;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0;
+            background: #000;
+            border: 3px solid #fff;
+        }
+
+        .header {
+            background: #fff;
+            color: #000;
+            padding: 20px;
+            border-bottom: 3px solid #000;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #000;
+            border-bottom: 3px solid #fff;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: #000;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-family: 'Courier New', monospace;
+            border-right: 3px solid #fff;
+        }
+
+        .tab-btn:last-child {
+            border-right: none;
+        }
+
+        .tab-btn:hover {
+            background: #333;
+        }
+
+        .tab-btn.active {
+            background: #fff;
+            color: #000;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .documents-grid {
+            display: block;
+            margin-top: 20px;
+        }
+
+        .document-card {
+            background: #000;
+            border: 2px solid #fff;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .document-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .document-info {
+            font-size: 12px;
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+
+        .document-actions {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .doc-btn {
+            padding: 8px 12px;
+            border: 2px solid #fff;
+            background: #000;
+            color: #fff;
+            cursor: pointer;
+            font-size: 12px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .doc-btn:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .delete-btn {
+            background: #000;
+            color: #fff;
+            border: 2px solid #fff;
+        }
+
+        .delete-btn:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .documents-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-bottom: 2px solid #fff;
+        }
+
+        .documents-header h2 {
+            font-size: 18px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .refresh-btn {
+            padding: 8px 12px;
+            background: #000;
+            color: #fff;
+            border: 2px solid #fff;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .refresh-btn:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .documents-header div {
+            display: flex;
+            align-items: center;
+        }
+
+        .form-container {
+            padding: 20px;
+        }
+
+        .product-type-selector {
+            margin-bottom: 20px;
+        }
+
+        .type-buttons {
+            display: flex;
+            gap: 0;
+            margin-top: 10px;
+        }
+
+        .type-btn {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #fff;
+            background: #000;
+            color: #fff;
+            cursor: pointer;
+            text-align: center;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            font-weight: bold;
+            border-right: none;
+        }
+
+        .type-btn:last-child {
+            border-right: 2px solid #fff;
+        }
+
+        .type-btn:hover {
+            background: #333;
+        }
+
+        .type-btn.active {
+            background: #fff;
+            color: #000;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #fff;
+            font-size: 14px;
+            text-transform: uppercase;
+            font-family: 'Courier New', monospace;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #fff;
+            background: #000;
+            color: #fff;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            background: #111;
+        }
+
+        .mix-components {
+            display: none;
+        }
+
+        .mix-components.active {
+            display: block;
+        }
+
+        .component-input {
+            display: flex;
+            gap: 0;
+            margin-bottom: 5px;
+            align-items: center;
+        }
+
+        .component-input input {
+            flex: 1;
+            border-right: none;
+        }
+
+        .remove-btn {
+            padding: 12px;
+            background: #000;
+            color: #fff;
+            border: 2px solid #fff;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .remove-btn:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .add-component-btn {
+            padding: 10px;
+            background: #000;
+            color: #fff;
+            border: 2px solid #fff;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 10px;
+            margin-right: 10px;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .add-component-btn:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .paste-area {
+            margin-bottom: 15px;
+            padding: 15px;
+            border: 2px solid #fff;
+            background: #000;
+        }
+
+        .paste-area textarea:focus {
+            outline: none;
+            background: #111;
+        }
+
+        .api-key-group {
+            background: #000;
+            padding: 15px;
+            border: 2px solid #fff;
+            margin-bottom: 15px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: #000;
+            color: #fff;
+            border: 3px solid #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+        }
+
+        .submit-btn:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            border: 2px solid #fff;
+        }
+
+        .spinner {
+            border: 3px solid #000;
+            border-top: 3px solid #fff;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .result {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            border: 2px solid #fff;
+        }
+
+        .result.success {
+            background: #000;
+            color: #fff;
+        }
+
+        .result.error {
+            background: #000;
+            color: #fff;
+        }
+
+        .download-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #fff;
+        }
+
+        .download-btn {
+            padding: 10px 15px;
+            background: #000;
+            color: #fff;
+            border: 2px solid #fff;
+            cursor: pointer;
+            font-size: 12px;
+            margin-right: 10px;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .download-btn:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        @media (max-width: 768px) {
+            .type-buttons {
+                flex-direction: column;
+            }
+            
+            .type-btn {
+                border-right: 2px solid #fff;
+                border-bottom: none;
+            }
+            
+            .type-btn:last-child {
+                border-bottom: 2px solid #fff;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>PRODUCT GENERATOR</h1>
+        </div>
+        
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="showTab('generator')">GENERATE</button>
+            <button class="tab-btn" onclick="showTab('documents')">DOCUMENTS</button>
+        </div>
+        
+        <div class="form-container">
+            <!-- Product Generator Tab -->
+            <div id="generatorTab" class="tab-content active">
+            <form id="productForm">
+                <div class="product-type-selector">
+                    <label>TYPE:</label>
+                    <div class="type-buttons">
+                        <button type="button" class="type-btn active" data-type="single">
+                            SINGLE
+                        </button>
+                        <button type="button" class="type-btn" data-type="mix">
+                            MIX
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="productTitle">TITLE:</label>
+                    <input type="text" id="productTitle" name="productTitle" required 
+                           placeholder="CALIFORNIA POPPY">
+                </div>
+
+                <div class="single-species-fields">
+                    <div class="form-group">
+                        <label for="scientificName">SCIENTIFIC NAME:</label>
+                        <input type="text" id="scientificName" name="scientificName" 
+                               placeholder="ESCHSCHOLZIA CALIFORNICA">
+                    </div>
+                </div>
+
+                <div class="mix-components">
+                    <div class="form-group">
+                        <label>COMPONENTS:</label>
+                        <div class="paste-area">
+                            <textarea id="pasteArea" placeholder="PASTE FROM GOOGLE SHEETS HERE (ONE INGREDIENT PER LINE)" 
+                                      rows="4" style="width: 100%; margin-bottom: 10px; padding: 10px; border: 2px solid #fff; background: #000; color: #fff; font-family: 'Courier New', monospace; font-size: 14px;"></textarea>
+                            <button type="button" class="add-component-btn" onclick="parseComponents()">PARSE COMPONENTS</button>
+                        </div>
+                        <div id="componentsContainer">
+                            <div class="component-input">
+                                <input type="text" placeholder="CALIFORNIA POPPY" required>
+                                <button type="button" class="remove-btn" onclick="removeComponent(this)">X</button>
+                            </div>
+                        </div>
+                        <button type="button" class="add-component-btn" onclick="addComponent()">+ ADD SINGLE</button>
+                    </div>
+                </div>
+
+                <div class="api-key-group">
+                    <div class="form-group">
+                        <label for="apiKey">API KEY:</label>
+                        <input type="password" id="apiKey" name="apiKey" required 
+                               placeholder="SK-...">
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    GENERATE
+                </button>
+            </form>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>GENERATING...</p>
+            </div>
+
+            <div class="result" id="result">
+                <h3 id="resultTitle"></h3>
+                <p id="resultMessage"></p>
+                <div class="download-section" id="downloadSection">
+                    <button class="download-btn" onclick="downloadJSON()">JSON</button>
+                    <button class="download-btn" onclick="copyToClipboard()">COPY</button>
+                </div>
+            </div>
+            </div>
+            
+            <!-- Product Documents Tab -->
+            <div id="documentsTab" class="tab-content">
+                <div class="documents-header">
+                    <h2>DOCUMENTS</h2>
+                    <div>
+                        <button class="refresh-btn" onclick="generateAllDocuments()">GENERATE ALL</button>
+                        <button class="refresh-btn" onclick="loadDocuments()">REFRESH</button>
+                    </div>
+                </div>
+                
+                <div id="documentsLoading" class="loading">
+                    <div class="spinner"></div>
+                    <p>LOADING...</p>
+                </div>
+                
+                <div id="documentsGrid" class="documents-grid">
+                    <!-- Documents will be loaded here -->
+                </div>
+                
+                <div id="documentsError" class="result error" style="display: none;">
+                    <h3>ERROR</h3>
+                    <p id="documentsErrorMessage"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let productData = null;
+        let productType = 'single';
+
+        // Product type switching
+        document.querySelectorAll('.type-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                productType = this.dataset.type;
+                
+                if (productType === 'mix') {
+                    document.querySelector('.single-species-fields').style.display = 'none';
+                    document.querySelector('.mix-components').classList.add('active');
+                    document.getElementById('scientificName').removeAttribute('required');
+                } else {
+                    document.querySelector('.single-species-fields').style.display = 'block';
+                    document.querySelector('.mix-components').classList.remove('active');
+                    document.getElementById('scientificName').setAttribute('required', '');
+                }
+            });
+        });
+
+        function addComponent() {
+            const container = document.getElementById('componentsContainer');
+            const div = document.createElement('div');
+            div.className = 'component-input';
+            div.innerHTML = `
+                <input type="text" placeholder="CALIFORNIA POPPY" required>
+                <button type="button" class="remove-btn" onclick="removeComponent(this)">X</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function parseComponents() {
+            const pasteArea = document.getElementById('pasteArea');
+            const text = pasteArea.value.trim();
+            
+            if (!text) {
+                alert('PASTE INGREDIENTS FIRST');
+                return;
+            }
+            
+            // Clear existing components except the first one
+            const container = document.getElementById('componentsContainer');
+            container.innerHTML = '';
+            
+            // Parse the pasted text - handle various formats
+            let components = [];
+            
+            // Split by lines first
+            const lines = text.split('\n').map(line => line.trim()).filter(line => line);
+            
+            for (let line of lines) {
+                // Handle tab-separated values (from Google Sheets)
+                if (line.includes('\t')) {
+                    const parts = line.split('\t').map(part => part.trim()).filter(part => part);
+                    components.push(...parts);
+                } else {
+                    // Handle comma-separated or single items
+                    if (line.includes(',')) {
+                        const parts = line.split(',').map(part => part.trim()).filter(part => part);
+                        components.push(...parts);
+                    } else {
+                        components.push(line);
+                    }
+                }
+            }
+            
+            // Remove duplicates and clean up
+            components = [...new Set(components)]
+                .map(comp => comp.replace(/^[\d\s\-\*\•]+/, '').trim()) // Remove leading numbers, bullets
+                .filter(comp => comp && comp.length > 1); // Filter out empty or single chars
+            
+            if (components.length === 0) {
+                alert('NO VALID COMPONENTS FOUND');
+                return;
+            }
+            
+            // Create input fields for each component
+            components.forEach(component => {
+                const div = document.createElement('div');
+                div.className = 'component-input';
+                div.innerHTML = `
+                    <input type="text" value="${component.toUpperCase()}" required>
+                    <button type="button" class="remove-btn" onclick="removeComponent(this)">X</button>
+                `;
+                container.appendChild(div);
+            });
+            
+            // Clear the paste area
+            pasteArea.value = '';
+            
+            alert(`PARSED ${components.length} COMPONENTS`);
+        }
+
+        function removeComponent(btn) {
+            const container = document.getElementById('componentsContainer');
+            if (container.children.length > 1) {
+                btn.parentElement.remove();
+            }
+        }
+
+        // Form submission
+        document.getElementById('productForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const title = formData.get('productTitle');
+            const apiKey = formData.get('apiKey');
+            
+            let requestData = {
+                title: title,
+                apiKey: apiKey,
+                productType: productType
+            };
+
+            if (productType === 'single') {
+                requestData.scientificName = formData.get('scientificName');
+            } else {
+                const components = [];
+                document.querySelectorAll('.component-input input').forEach(input => {
+                    if (input.value.trim()) {
+                        components.push(input.value.trim());
+                    }
+                });
+                requestData.mixComponents = components;
+            }
+
+            // Show loading
+            document.getElementById('productForm').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+
+            try {
+                // Since we can't make direct API calls from frontend due to CORS,
+                // we'll simulate the process and provide instructions
+                await simulateAPICall(requestData);
+                
+            } catch (error) {
+                showResult('error', 'Error', error.message);
+            }
+        });
+
+        async function simulateAPICall(data) {
+            try {
+                // Make actual API call to our serverless function
+                const response = await fetch('/api/generate-product', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to generate product information');
+                }
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    showResult('success', 'GENERATED', 
+                        result.message || 'Product generated, saved to database, and Word document created automatically.');
+                    
+                    window.productData = result.data;
+                    
+                    // Auto-refresh documents tab after 2 seconds
+                    setTimeout(() => {
+                        loadDocuments();
+                    }, 2000);
+                } else {
+                    throw new Error('Failed to generate product information');
+                }
+                
+            } catch (error) {
+                // Fallback to template if API fails
+                console.warn('API call failed, using template:', error);
+                const productData = createProductTemplate(data);
+                
+                showResult('success', 'TEMPLATE GENERATED', 
+                    'Generated a product template. For full AI-powered content, ensure your API is properly configured.');
+                
+                window.productData = productData;
+            }
+        }
+
+        function createProductTemplate(data) {
+            const template = {
+                "Title": data.title,
+                "SKU": generateSKU(data.title),
+                "Scientific Name / mix %": data.productType === 'single' ? data.scientificName : 
+                    data.mixComponents.map((comp, i) => `${comp} ${Math.floor(100/data.mixComponents.length)}%`).join('; '),
+                "What is the? ( SEO Description 100-200 words) ": `[AI Generated] ${data.title} product description would be generated here using OpenAI API...`,
+                "Sun Requirements (Full Sun, Full Sun to Partial Shade, Shade)": "[AI Generated]",
+                "Soil Preference": "[AI Generated]",
+                "Soil pH": "[AI Generated]",
+                "Days to Maturity": "[AI Generated]",
+                "Height when mature": "[AI Generated]",
+                "Seeding rate": "[AI Generated]",
+                "Planting Depth": "[AI Generated]",
+                "Why chose this product Title 1": "[AI Generated]",
+                "Why chose this product 1": "[AI Generated]",
+                "Why chose this product Title 2": "[AI Generated]",
+                "Why chose this product 2": "[AI Generated]",
+                "Why chose this product Title 3": "[AI Generated]",
+                "Why chose this product 3": "[AI Generated]",
+                "Why chose this product Title 4": "[AI Generated]",
+                "Why chose this product 4": "[AI Generated]",
+                "Why chose this product Title 5": "[AI Generated]",
+                "Why chose this product 5": "[AI Generated]",
+                "Sun/Shade": "[AI Generated]",
+                "Height when Mature": "[AI Generated]",
+                "Seeding Rate": "[AI Generated]",
+                "Uses": "[AI Generated]",
+                "Color": "[AI Generated]",
+                "Water": "[AI Generated]",
+                "Native/Introduced": "[AI Generated]",
+                "Life Form": "[AI Generated]",
+                "Planting Guide Step 1": "[AI Generated]",
+                "Planting Guide Step 2": "[AI Generated]",
+                "Planting Guide Step 3": "[AI Generated]",
+                "Planting Guide Step 4": "[AI Generated]",
+                "FAQ 1": "[AI Generated]",
+                "FAQ 2": "[AI Generated]",
+                "FAQ 3": "[AI Generated]",
+                "FAQ 4": "[AI Generated]",
+                "FAQ 5": "[AI Generated]",
+                "FAQ 6": "[AI Generated]",
+                "Main category": "Wildflower Seed"
+            };
+            
+            return template;
+        }
+
+        function generateSKU(title) {
+            const words = title.match(/\b\w+/g) || [];
+            const letters = words.slice(0, 4).map(word => word[0].toUpperCase()).join('');
+            return `W-${letters}-0.25-LB`;
+        }
+
+        function showResult(type, title, message) {
+            document.getElementById('loading').style.display = 'none';
+            
+            const result = document.getElementById('result');
+            result.className = `result ${type}`;
+            result.style.display = 'block';
+            
+            document.getElementById('resultTitle').textContent = title;
+            document.getElementById('resultMessage').textContent = message;
+            
+            if (type === 'success') {
+                document.getElementById('downloadSection').style.display = 'block';
+            } else {
+                document.getElementById('downloadSection').style.display = 'none';
+                // Show form again on error
+                document.getElementById('productForm').style.display = 'block';
+            }
+        }
+
+        function downloadJSON() {
+            if (!window.productData) return;
+            
+            const dataStr = JSON.stringify(window.productData, null, 4);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `${window.productData.Title.replace(/[^a-z0-9]/gi, '_')}.json`;
+            link.click();
+        }
+
+        function copyToClipboard() {
+            if (!window.productData) return;
+            
+            const dataStr = JSON.stringify(window.productData, null, 4);
+            navigator.clipboard.writeText(dataStr).then(() => {
+                alert('Product data copied to clipboard!');
+            });
+        }
+
+        // Tab switching functionality
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            
+            // Add active class to selected tab button
+            event.target.classList.add('active');
+            
+            // Load documents if documents tab is selected
+            if (tabName === 'documents') {
+                loadDocuments();
+            }
+        }
+
+        // Load documents from API
+        async function loadDocuments() {
+            const loading = document.getElementById('documentsLoading');
+            const grid = document.getElementById('documentsGrid');
+            const error = document.getElementById('documentsError');
+            
+            loading.style.display = 'block';
+            grid.style.display = 'none';
+            error.style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/list-documents');
+                
+                if (!response.ok) {
+                    throw new Error('Failed to load documents');
+                }
+                
+                const documents = await response.json();
+                displayDocuments(documents);
+                
+            } catch (err) {
+                console.error('Error loading documents:', err);
+                showDocumentsError('Failed to load documents. Please try again.');
+            }
+        }
+
+        function displayDocuments(documents) {
+            const loading = document.getElementById('documentsLoading');
+            const grid = document.getElementById('documentsGrid');
+            
+            loading.style.display = 'none';
+            grid.style.display = 'grid';
+            
+            if (documents.length === 0) {
+                grid.innerHTML = '<p style="text-align: center; color: #fff; padding: 20px; border: 2px solid #fff;">NO DOCUMENTS FOUND</p>';
+                return;
+            }
+            
+            grid.innerHTML = documents.map(doc => `
+                <div class="document-card">
+                    <div class="document-title">${doc.name}</div>
+                    <div class="document-info">
+                        Size: ${formatFileSize(doc.size)}<br>
+                        Modified: ${formatDate(doc.modified)}
+                    </div>
+                    <div class="document-actions">
+                        <a href="/api/download-document?file=${encodeURIComponent(doc.filename)}" 
+                           class="doc-btn download-doc-btn" target="_blank">
+                            DOWNLOAD
+                        </a>
+                        <button class="doc-btn regenerate-btn" 
+                                onclick="regenerateDocument('${doc.filename}')">
+                            REGEN
+                        </button>
+                        <button class="doc-btn delete-btn" 
+                                onclick="deleteDocument('${doc.filename}')">
+                            DELETE
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showDocumentsError(message) {
+            const loading = document.getElementById('documentsLoading');
+            const grid = document.getElementById('documentsGrid');
+            const error = document.getElementById('documentsError');
+            
+            loading.style.display = 'none';
+            grid.style.display = 'none';
+            error.style.display = 'block';
+            
+            document.getElementById('documentsErrorMessage').textContent = message;
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        async function regenerateDocument(filename) {
+            if (!confirm('Are you sure you want to regenerate this document? This will overwrite the existing file.')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/regenerate-document', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ filename })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to regenerate document');
+                }
+                
+                alert('Document regeneration started. Please refresh in a moment.');
+                loadDocuments(); // Refresh the list
+                
+            } catch (err) {
+                console.error('Error regenerating document:', err);
+                alert('Failed to regenerate document. Please try again.');
+            }
+        }
+
+        async function generateAllDocuments() {
+            if (!confirm('Generate Word documents for ALL products in the database?')) {
+                return;
+            }
+            
+            const loading = document.getElementById('documentsLoading');
+            const grid = document.getElementById('documentsGrid');
+            const error = document.getElementById('documentsError');
+            
+            loading.style.display = 'block';
+            grid.style.display = 'none';
+            error.style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/generate-all-documents', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to generate documents');
+                }
+                
+                const result = await response.json();
+                
+                loading.style.display = 'none';
+                alert('ALL DOCUMENTS GENERATED SUCCESSFULLY');
+                loadDocuments(); // Refresh the list
+                
+            } catch (err) {
+                console.error('Error generating all documents:', err);
+                loading.style.display = 'none';
+                showDocumentsError('Failed to generate documents. Please try again.');
+            }
+        }
+
+        async function deleteDocument(filename) {
+            const productName = filename.replace('.docx', '').replace(/_/g, ' ');
+            
+            if (!confirm(`DELETE "${productName}"?\n\nThis will:\n- Delete the Word document\n- Remove from JSON database\n\nThis action cannot be undone.`)) {
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/delete-document', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ filename })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to delete document');
+                }
+                
+                const result = await response.json();
+                
+                alert(`DELETED: ${productName}\n${result.message}`);
+                loadDocuments(); // Refresh the list
+                
+            } catch (err) {
+                console.error('Error deleting document:', err);
+                alert('Failed to delete document. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/generate-product.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
+}

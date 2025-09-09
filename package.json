@@ -1,0 +1,25 @@
+{
+  "name": "product-document-generator",
+  "version": "1.0.0",
+  "description": "AI-powered product information generator for plant seeds",
+  "main": "index.html",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "vercel dev",
+    "build": "echo 'Static site, no build needed'",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "openai": "^4.0.0",
+    "express": "^4.18.2"
+  },
+  "keywords": [
+    "plants",
+    "seeds",
+    "product-generator",
+    "ai",
+    "openai"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}
